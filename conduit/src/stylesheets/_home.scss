@@ -1,0 +1,114 @@
+.hero{
+  background-color: rgb(92,184,91);
+  .container{
+    text-align: center;
+    padding: 4rem 0;
+    color: white;
+    h2{
+      font-size: 3rem;
+      font-family: 'Titillium Web', sans-serif;
+      font-weight: 600;
+      text-shadow: 1rem;
+    }
+  }
+}
+
+.home-content-wrapper{
+  display: flex;
+  // min-height: 100vh;
+  align-items: flex-start;
+  .feeds{
+    width: 70%;
+    // background-color: red;
+    padding: 4rem 0;
+  }
+  .tags{
+    width: 30%;
+    background-color: rgb(243,243,243);
+    padding: 1rem 2rem;
+
+  }
+}
+
+// feeds list
+.article{
+  border-top:1px solid rgb(172, 170, 170);
+  padding: 1rem 0;
+}
+.row_one{
+  display: flex;
+  justify-content: space-between;
+  .author-info-wrapper{
+    display: flex;
+    align-items: center;
+    .author_img_wrapper{
+      width: 10%;
+      display: flex;
+      img{
+        border-radius: 50%;
+        width: 100%;
+      }
+
+    }
+  }
+  .author-info{
+    font-size: 0.8rem;
+    padding-left: 0.5rem;
+  }
+  .likes{
+    display: flex;
+    justify-content: center;
+    align-items: baseline;
+    padding: 0.25rem 0.5rem ;
+    border: 1px solid green;
+    border-radius: 10px;
+    
+  }
+}
+.row_two{
+  padding: 1rem 0;
+  h2{
+    font-weight: 600;
+    font-size: 1.25rem;
+  }
+}
+
+.row_three{
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;  
+  ul{
+    display: flex;
+    flex-wrap: wrap;
+    li{
+      border: 1px solid gray;
+      padding: 0.25rem;
+      border-radius: 10px;
+      margin-left: 0.25rem;
+
+    }
+  }
+}
+
+.tag{
+  border: 1px solid rgb(172, 170, 170);
+  color: white;
+  background-color: rgb(129,138,145);
+  padding:0 0.25rem;
+  border-radius: 10px;
+  margin: 0.25rem;
+}
+.feeds-list{
+  padding: 0 2rem;
+}
+.pagination{
+  // justify-content: space-between;
+  justify-content: flex-start;
+  li{
+    padding: 0.75rem;
+    border-radius: 10px;
+    border: 1px solid rgb(204, 200, 200);
+  }
+    
+
+}
