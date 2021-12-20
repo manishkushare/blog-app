@@ -1,22 +1,38 @@
 // import { render } from "@testing-library/react";
 import { Link } from "react-router-dom";
 import React from "react";
+import { ARTICLES_URL } from "../utils/constants";
 class Article extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       article: null,
+      error: null,
     };
-    this.baseURL = "https://mighty-oasis-08080.herokuapp.com/api/";
   }
-  componentDidMount() {
+  async componentDidMount() {
     const slug = this.props.match.params.slug;
-    fetch(this.baseURL + `articles/${slug}`)
-      .then((res) => res.json())
-      .then((article) => this.setState({ article: article.article }));
+    try {
+      let article = await fetch(ARTICLES_URL + `/${slug}`);
+      if (!article.ok) {
+        throw Error(article.statusText);
+      }
+      article = await article.json();
+      this.setState({ article : article.article });
+    } catch (error) {
+      this.setState({error: `Not able to fetch Article - ${slug}`})
+    }
   }
   render() {
-    const { article } = this.state;
+    const { article,error } = this.state;
+    if (error) {
+      return (
+      <div className="container">
+          <h1>{error}</h1 >
+
+        </div>
+        )
+    }
     if (!article) {
       return (
         <div className="container">

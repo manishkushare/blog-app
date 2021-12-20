@@ -8,24 +8,19 @@ function App() {
   return (
     <>
       <Header />
-      <main>
-        <Route path="/" exact>
-          <Home  />
-          
-        </Route>
-        <Route path="/register">
-          <SignUp />
-        </Route>
-        <Route path="/login">
-          <SignIn />
-        </Route>
-        <Route path="/articles/:slug" component={Article} >
-          
-        </Route>
-      </main>
+
+      <Route path="/" exact>
+        <Home />
+      </Route>
+      <Route path="/register">
+        <SignUp />
+      </Route>
+      <Route path="/login">
+        <SignIn />
+      </Route>
+      <Route path="/articles/:slug" component={Article}></Route>
     </>
-    
-  )
+  );
 }
 
 export default App;

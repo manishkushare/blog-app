@@ -1,100 +1,104 @@
 import React from "react";
-import Feeds from "./Feeds";
+import Articles from "./Articles";
 import Tags from "./Tags";
+import Banner from "./Banner";
+import Pagination from "./Pagination";
+import ArticlesNav from "./ArticlesNav";
+import { ARTICLES_URL } from "../utils/constants";
+
 class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      feeds: null,
-      tags: null,
+      articles: null,
+      error : null,
       offset: 0,
       activePage: 1,
       articleCount: null,
-      limit: 10,
-      tag : null,
+      articlesPerPage: 10,
+      activeTab: "",
     };
-    this.baseURL = 'https://mighty-oasis-08080.herokuapp.com/api/';
   }
+  addTab = (tab) => {
+    this.setState({ activeTab: tab, offset: 0 });
+  };
+  removeTab = () => {
+    this.setState({ activeTab: "" });
+  }
+  fetchData = async () => {
+    const { articlesPerPage, offset,activeTab } = this.state;
+    try {
+      let articles = await fetch(
+        ARTICLES_URL + `?limit=${articlesPerPage}&offset=${offset}` + (activeTab && `&tag=${activeTab}`)
+      );
+      if (!articles.ok) {
+        throw Error(articles.statusText);
+      }
+      articles = await articles.json();
+      this.setState({ articles, articleCount: articles.articlesCount });
+    } catch (error) {
+      this.setState({ error: "Not able to fetch Articles" });
+    }
+  };
   componentDidMount() {
-    fetch(this.baseURL + `articles?limit=${this.state.limit}&offset=${this.state.offset}`)
-      .then(res => res.json())
-      .then(data => {
-        const feeds = data;
-        return fetch(this.baseURL + "tags")
-          .then(res => res.json())
-          .then(data => {
-            const tags = data;
-            return this.setState({feeds,tags,articleCount: feeds.articlesCount})
-        })
-      })
-    
+    console.log("componentDidMount");
+    this.fetchData();
   }
   handlePage = (pageNum) => {
-    pageNum = +pageNum
+    pageNum = +pageNum;
     let offset = null;
     if (pageNum > 1) {
-      offset = (pageNum * 10) - 10;
+      offset = pageNum * 10 - 10;
     }
     if (pageNum === 1) {
       offset = 0;
     }
     this.setState({
       activePage: pageNum,
-      offset
-    })
-  }
-  loadGlobal = () => {
-    this.setState({
-      activePage: 1,
-      tag :null,
-      offset:0
-    })
-  }
-  handleTag = (tag) => {
-    this.setState({ tag,activePage: 1,offset:0});
-  }
+      offset,
+    });
+  };
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.activePage !== this.state.activePage) {
-      console.log('page inside componentDidUpdate');
-      fetch(this.baseURL + `articles?limit=10&offset=${this.state.offset}`)
-      .then(res => res.json())
-      .then(data => this.setState({feeds :data}))
+    if (prevState.activePage !== this.state.activePage || (prevState.activeTab !== this.state.activeTab)) {
+      console.log("componentDidUpdate");
+      this.fetchData();
       
-    }
-    if (prevState.tag !== this.state.tag ) {
-      console.log('tag inside componentDidUpdate');
-
-      fetch(this.baseURL + `articles?limit=10&offset=${this.state.offset}&tag=${this.state.tag}`)
-      .then(res => res.json())
-      .then(data => this.setState({feeds :data,articleCount: data.articlesCount}))
     }
   }
   render() {
-    const feeds = this.state.feeds;
-    const activePage = this.state.activePage;
-    const tags = this.state.tags
+    
+    const {
+      activePage,
+      articles,
+      articlesPerPage,
+      articleCount,
+      activeTab,
+    } = this.state;
     return (
       <>
-        <section className="hero">
-          <div className="container">
-            <h2>conduit</h2>
-            <p>A place to share your knowledge.</p>
-          </div>
-        </section>
+        <Banner />
         <section className="home-content">
           <div className="container home-content-wrapper">
-            <article className="feeds">
-              {
-                
-                this.state.feeds ? <Feeds {...feeds} loadGlobal={this.loadGlobal} tag={this.state.tag} activePage={activePage} handlePage={this.handlePage} articleCount={this.state.articleCount} limit={this.state.limit} />: <h3>Loading.....</h3>
-              }
-            </article>
+            <section className="feeds">
+              <ArticlesNav activeTab={activeTab} removeTab={this.removeTab} />
+              {articles ? (
+                <Articles
+                  {...articles}
+                  activePage={activePage}
+                />
+              ) : (
+                <h3>Loading.....</h3>
+              )}
+              <Pagination
+                articleCount={articleCount}
+                limit={articlesPerPage}
+                handlePage={this.handlePage}
+                activePage={activePage}
+              />
+            </section>
             <aside className="tags">
-              {
-                this.state.tags ? <Tags {...tags} handleTag={ this.handleTag}/>: <h3>Loading....</h3>
-              }
+              <Tags addTab={this.addTab} />
             </aside>
-
           </div>
         </section>
       </>
@@ -102,3 +106,4 @@ class Home extends React.Component {
   }
 }
 export default Home;
+
