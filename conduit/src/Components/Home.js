@@ -18,18 +18,19 @@ class Home extends React.Component {
       articlesPerPage: 10,
       activeTab: "",
     };
+
   }
   addTab = (tab) => {
-    this.setState({ activeTab: tab, offset: 0 });
+    this.setState({ activeTab: tab, offset: 0 ,activePage :1});
   };
   removeTab = () => {
     this.setState({ activeTab: "" });
   }
   fetchData = async () => {
-    const { articlesPerPage, offset,activeTab } = this.state;
+    const { articlesPerPage, offset, activeTab, articles } = this.state;
     try {
       let articles = await fetch(
-        ARTICLES_URL + `?limit=${articlesPerPage}&offset=${offset}` + (activeTab && `&tag=${activeTab}`)
+        ARTICLES_URL + `?limit=${articlesPerPage}&offset=${offset}` + (activeTab && ((activeTab !== "yourfeeds" && `&tag=${activeTab} `)||(activeTab === "yourfeeds" && `&author=${this.props.user.username}` )))
       );
       if (!articles.ok) {
         throw Error(articles.statusText);
@@ -74,17 +75,19 @@ class Home extends React.Component {
       articleCount,
       activeTab,
     } = this.state;
+    const { user, isLoggedIn } = this.props;
     return (
       <>
         <Banner />
         <section className="home-content">
           <div className="container home-content-wrapper">
             <section className="feeds">
-              <ArticlesNav activeTab={activeTab} removeTab={this.removeTab} />
+              <ArticlesNav activeTab={activeTab} removeTab={this.removeTab} addTab={this.addTab}  user={user} isLoggedIn={isLoggedIn} />
               {articles ? (
                 <Articles
                   {...articles}
                   activePage={activePage}
+                  articleCount={articleCount}
                 />
               ) : (
                 <h3>Loading.....</h3>

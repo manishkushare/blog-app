@@ -1,5 +1,7 @@
 import React from "react";
-import { Link , Redirect} from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import { SIGN_UP } from "../utils/constants";
+import { withRouter } from "react-router-dom";
 class SignUp extends React.Component {
   constructor(props) {
     super(props);
@@ -11,10 +13,9 @@ class SignUp extends React.Component {
         username: "",
         email: "",
         password: "",
+       
       },
-      redirect : null,
     };
-    this.baseURL = "https://mighty-oasis-08080.herokuapp.com/api/";
   }
   validateEmail = (email) => {
     return email.match(
@@ -34,9 +35,9 @@ class SignUp extends React.Component {
       this.state.email &&
       this.state.password &&
       this.state.username &&
-      !this.state.errors.email.trim() &&
-      !this.state.errors.password.trim() &&
-      !this.state.errors.username.trim()
+      !this.state.errors.email &&
+      !this.state.errors.password &&
+      !this.state.errors.username
     ) {
       console.log("true");
       return false;
@@ -70,37 +71,45 @@ class SignUp extends React.Component {
     });
   };
 
-  handleSubmit = (event) => {
+  handleSubmit = async (event) => {
     const { username, email, password } = this.state;
+    // let errors = this.state.errors;
     event.preventDefault();
-    fetch(this.baseURL+"users", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({
-        "user": {
-          username,
-          password,
-          email
-        }
-      }),
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        console.log(result);
-        this.setState({redirect : "/login"})
+    try {
+      let user = await fetch(SIGN_UP, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          user: {
+            username,
+            password,
+            email,
+          },
+        }),
+      });
+      if (!user.ok) {
+        user = await user.json();
+        console.log(user)
+        user = await Promise.reject(user);
+        return user;
+      }
+      user = await user.json();
+      console.log(user);
+      this.props.persistUser(user.user);
+      this.setState({ username: "", email: "", password: "" });
+      return this.props.history.push('/');
 
-      })
-      .catch(error => {
-      console.log(error);
-    })
+    } catch ({errors}) {
+      console.log(errors,"errors"); 
+      return this.setState({ errors });
+    }
   };
   render() {
-    if (this.state.redirect) {
-      return <Redirect to={this.state.redirect} />
-    }
+    
     const { email, username, password } = this.state.errors;
+    
     return (
       <section className="sign-up">
         <div className="container flex justify-center">
@@ -167,4 +176,4 @@ class SignUp extends React.Component {
     );
   }
 }
-export default SignUp;
+export default withRouter(SignUp);

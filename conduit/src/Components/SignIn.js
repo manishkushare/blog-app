@@ -1,5 +1,7 @@
 import React from "react";
-import { Link ,Redirect} from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import { SIGN_IN } from "../utils/constants";
+import {withRouter } from"react-router-dom"
 class SignIn extends React.Component {
   constructor(props) {
     super(props);
@@ -9,10 +11,10 @@ class SignIn extends React.Component {
       errors: {
         email: "",
         password: "",
+        error: "",
       },
-      redirect : null,
+      redirect: null,
     };
-    this.baseURL = "https://mighty-oasis-08080.herokuapp.com/api/";
   }
   validateEmail = (email) => {
     return email.match(
@@ -32,7 +34,7 @@ class SignIn extends React.Component {
       this.state.email &&
       this.state.password &&
       !this.state.errors.email.trim() &&
-      !this.state.errors.password.trim() 
+      !this.state.errors.password.trim()
     ) {
       console.log("true");
       return false;
@@ -60,36 +62,50 @@ class SignIn extends React.Component {
     });
   };
 
-  handleSubmit = (event) => {
+  handleSubmit = async (event) => {
     const { email, password } = this.state;
+    let errors = { ...this.state.errors };
     event.preventDefault();
-    fetch(this.baseURL+"users/login", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({
-        "user": {
-          password,
-          email
-        }
-      }),
-    })
-      .then((response) => response.json())
-      .then((result) => {
-        console.log(result);
-        this.setState({redirect : "/"})
-
-      })
-      .catch(error => {
+    try {
+      let user = await fetch(SIGN_IN, {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({
+          user: {
+            password,
+            email,
+          },
+        }),
+      });
+      if (!user.ok) {
+        user = await user.json();
+        user = await Promise.reject(user);
+        return user;
+      }
+      user = await user.json();
+      this.props.persistUser(user.user);
+      this.setState({ email: "", password: "" });
+      this.props.history.push('/');
+    } catch (error) {
       console.log(error);
-    })
+      this.setState(prevState => {
+        return {
+          ...prevState,
+          errors: {
+            ...prevState.errors,
+            email : "Email or Password is Incorrect"
+          }
+          
+        }
+      });
+      
+    }
   };
   render() {
-    if (this.state.redirect) {
-      return <Redirect to={this.state.redirect} />
-    }
-    const { email, password } = this.state.errors;
+    const { email, password, error } = this.state.errors;
+    
     return (
       <section className="sign-up">
         <div className="container flex justify-center">
@@ -143,4 +159,4 @@ class SignIn extends React.Component {
     );
   }
 }
-export default SignIn;
+export default withRouter(SignIn);

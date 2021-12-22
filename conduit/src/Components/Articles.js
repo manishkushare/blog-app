@@ -1,7 +1,14 @@
 import { Link } from "react-router-dom";
 function Articles(props) {
-  
+  if (props.articles.length === 0) {
+    return (
+      <ul className="feeds-list">
+        <li>No Articles found by author</li>
+      </ul>
+    )
+  }
   return (
+
     <ul className="feeds-list">
       {props.articles.map((article, index) => {
         return (

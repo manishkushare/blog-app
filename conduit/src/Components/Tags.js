@@ -5,7 +5,7 @@ class Tags extends React.Component {
     super(props);
     this.state = {
       tagsList: null,
-      error : null,
+      error: null,
     };
   }
   async componentDidMount() {
@@ -24,6 +24,7 @@ class Tags extends React.Component {
   render() {
     const { error } = this.state;
     const tagsList = this.state.tagsList;
+    const activeTab = this.props.activeTab;
     if (error) {
       return <h2>{error}</h2>
     }
