@@ -1,5 +1,5 @@
 import React from "react";
-import { TAGS_LIST } from "../utils/constants";
+import { TAGS_LIST_URL } from "../utils/constants";
 class Tags extends React.Component {
   constructor(props) {
     super(props);
@@ -10,7 +10,7 @@ class Tags extends React.Component {
   }
   async componentDidMount() {
     try {
-      let tagsList = await fetch(TAGS_LIST);
+      let tagsList = await fetch(TAGS_LIST_URL);
       if (!tagsList.ok) {
         throw Error(tagsList.statusText);
       }

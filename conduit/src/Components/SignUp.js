@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, Redirect } from "react-router-dom";
-import { SIGN_UP } from "../utils/constants";
+import { SIGN_UP_URL } from "../utils/constants";
 import { withRouter } from "react-router-dom";
 class SignUp extends React.Component {
   constructor(props) {
@@ -76,7 +76,7 @@ class SignUp extends React.Component {
     // let errors = this.state.errors;
     event.preventDefault();
     try {
-      let user = await fetch(SIGN_UP, {
+      let user = await fetch(SIGN_UP_URL, {
         method: "POST",
         headers: {
           "Content-type": "application/json",
