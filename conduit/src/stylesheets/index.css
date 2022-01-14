@@ -99,10 +99,20 @@ Link, a {
   padding: 1rem;
 }
 
+.padding-y-2rem {
+  padding: 2rem 0;
+}
+
 .flex-start {
   -webkit-box-pack: start;
       -ms-flex-pack: start;
           justify-content: flex-start;
+}
+
+.align-item-center {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .flex-col {
@@ -123,8 +133,20 @@ Link, a {
   width: 40%;
 }
 
+.w-80 {
+  width: 80%;
+}
+
 .border {
   border: 1px solid black;
+}
+
+.p-tb-1 {
+  padding: 1rem 0;
+}
+
+.p-tb-2 {
+  padding: 2rem 0;
 }
 
 .align-item-center {
@@ -215,6 +237,21 @@ Link, a {
   background-color: green !important;
 }
 
+form span {
+  color: red;
+  font-size: 0.8rem;
+}
+
+.align-item-baseline {
+  -webkit-box-align: baseline;
+      -ms-flex-align: baseline;
+          align-items: baseline;
+}
+
+.border-bottom {
+  border-bottom: 2px solid #bebaba;
+}
+
 .header {
   padding: 1.25rem 0;
 }
@@ -253,6 +290,19 @@ Link, a {
 
 .nav {
   width: 60%;
+}
+
+.header .profile-wrapper {
+  width: 50px;
+  height: 50px;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+
+.header .profile-wrapper img {
+  border-radius: 50%;
+  width: 100%;
 }
 
 .hero {
@@ -521,5 +571,60 @@ Link, a {
 
 .article_nav li {
   margin: 0 1rem;
+}
+
+.newpost_form input, .newpost_form textarea {
+  padding: 0.5rem 0;
+  margin: 0.5rem 0;
+}
+
+.newpost_form button {
+  padding: 0.5rem 1rem;
+  margin: 0.5rem 0;
+}
+
+.settings form legend {
+  text-align: center;
+  font-size: 1.25rem;
+}
+
+.settings form input, .settings form textarea {
+  margin: 0.5rem 0;
+  padding: 0.5rem 0;
+}
+
+.settings form button {
+  padding: 0.5rem 1rem;
+  background-color: #4bad4b;
+  outline: 0;
+  border: none;
+  color: white;
+}
+
+.user_profile_banner {
+  background-color: #F3F3F3;
+  padding: 2rem 0;
+}
+
+.user_profile_banner .user_profile_img_wrapper {
+  width: 150px;
+  height: 150px;
+  padding: 1rem;
+}
+
+.user_profile_banner .user_profile_img_wrapper img {
+  width: 100%;
+  height: auto;
+  border-radius: 50%;
+}
+
+.user_profile_banner h2 {
+  color: black;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+
+.user_profile_banner p {
+  color: #6e6c6c;
 }
 /*# sourceMappingURL=index.css.map */

@@ -4,39 +4,57 @@ import Tags from "./Tags";
 import Banner from "./Banner";
 import Pagination from "./Pagination";
 import ArticlesNav from "./ArticlesNav";
-import { ARTICLES_URL } from "../utils/constants";
-
+import { ARTICLES_URL, ARTICLES_FEEDS_URL } from "../utils/constants";
+// ||(activeTab === "yourfeeds" && `&author=${this.props.user.username}` )))
 class Home extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       articles: null,
-      error : null,
+      error: null,
       offset: 0,
       activePage: 1,
       articleCount: null,
       articlesPerPage: 10,
       activeTab: "",
     };
-
   }
   addTab = (tab) => {
-    this.setState({ activeTab: tab, offset: 0 ,activePage :1});
+    this.setState({ activeTab: tab, offset: 0, activePage: 1 });
   };
   removeTab = () => {
     this.setState({ activeTab: "" });
-  }
+  };
   fetchData = async () => {
-    const { articlesPerPage, offset, activeTab, articles } = this.state;
+    const { articlesPerPage, offset, activeTab } = this.state;
     try {
-      let articles = await fetch(
-        ARTICLES_URL + `?limit=${articlesPerPage}&offset=${offset}` + (activeTab && ((activeTab !== "yourfeeds" && `&tag=${activeTab} `)||(activeTab === "yourfeeds" && `&author=${this.props.user.username}` )))
-      );
+      let articles = null;
+      if (activeTab && activeTab === "yourfeeds") {
+        console.log("inside if");
+        articles = await fetch(ARTICLES_FEEDS_URL, {
+          method: "GET",
+          headers: {
+            "Authorization": `Token ${this.props.user.token}`,
+          },
+        });
+      } else {
+        console.log("inside else");
+        articles = await fetch(
+          ARTICLES_URL +
+            `?limit=${articlesPerPage}&offset=${offset}` +
+            (activeTab && `&tag=${activeTab} `)
+        );
+      }
+
       if (!articles.ok) {
         throw Error(articles.statusText);
       }
       articles = await articles.json();
-      this.setState({ articles, articleCount: articles.articlesCount });
+      this.setState({
+        articles,
+        articleCount: articles.articlesCount,
+        error: "",
+      });
     } catch (error) {
       this.setState({ error: "Not able to fetch Articles" });
     }
@@ -60,20 +78,23 @@ class Home extends React.Component {
     });
   };
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.activePage !== this.state.activePage || (prevState.activeTab !== this.state.activeTab)) {
+    if (
+      prevState.activePage !== this.state.activePage ||
+      prevState.activeTab !== this.state.activeTab
+    ) {
       console.log("componentDidUpdate");
       this.fetchData();
-      
     }
   }
   render() {
-    
+    console.log(this.props);
     const {
       activePage,
       articles,
       articlesPerPage,
       articleCount,
       activeTab,
+      error,
     } = this.state;
     const { user, isLoggedIn } = this.props;
     return (
@@ -82,7 +103,13 @@ class Home extends React.Component {
         <section className="home-content">
           <div className="container home-content-wrapper">
             <section className="feeds">
-              <ArticlesNav activeTab={activeTab} removeTab={this.removeTab} addTab={this.addTab}  user={user} isLoggedIn={isLoggedIn} />
+              <ArticlesNav
+                activeTab={activeTab}
+                removeTab={this.removeTab}
+                addTab={this.addTab}
+                user={user}
+                isLoggedIn={isLoggedIn}
+              />
               {articles ? (
                 <Articles
                   {...articles}
@@ -109,4 +136,3 @@ class Home extends React.Component {
   }
 }
 export default Home;
-

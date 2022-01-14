@@ -98,7 +98,7 @@ class SignUp extends React.Component {
       user = await user.json();
       console.log(user);
       this.props.persistUser(user.user);
-      this.setState({ username: "", email: "", password: "" });
+      // this.setState({ username: "", email: "", password: "" });
       return this.props.history.push('/');
 
     } catch ({errors}) {
@@ -114,7 +114,7 @@ class SignUp extends React.Component {
       <section className="sign-up">
         <div className="container flex justify-center">
           <form
-            action={this.baseURL + "users"}
+            action={SIGN_UP_URL}
             onSubmit={this.handleSubmit}
             method="post"
             className="flex  flex-col w-40"

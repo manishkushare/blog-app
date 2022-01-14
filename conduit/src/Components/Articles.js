@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 function Articles(props) {
-  if (props.articles.length === 0) {
+  if (props.articles.length === 0 ) {
     return (
       <ul className="feeds-list">
-        <li>No Articles found by author</li>
+        <li>No Articles found</li>
       </ul>
     )
   }
@@ -14,15 +14,17 @@ function Articles(props) {
         return (
           <li key={index} className="article">
             <div className="row_one">
-              <div className="author-info-wrapper">
-                <div className="author_img_wrapper">
-                  <img src={article.author.image} alt="" />
+              <Link to={`/profile/${article.author.username}`}>
+                <div className="author-info-wrapper">
+                  <div className="author_img_wrapper">
+                    <img src={article.author.image} alt="" />
+                  </div>
+                  <div className="author-info">
+                    <h2>{article.author.username}</h2>
+                    <span>{article.createdAt}</span>
+                  </div>
                 </div>
-                <div className="author-info">
-                  <h2>{article.author.username}</h2>
-                  <span>{article.createdAt}</span>
-                </div>
-              </div>
+              </Link>
               <div className="likes">
                 <i className="fas fa-heart"></i>
                 <p>{article.favoritesCount}</p>

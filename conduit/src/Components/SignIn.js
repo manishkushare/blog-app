@@ -86,7 +86,7 @@ class SignIn extends React.Component {
       }
       user = await user.json();
       this.props.persistUser(user.user);
-      this.setState({ email: "", password: "" });
+      // this.setState({ email: "", password: "" });
       this.props.history.push('/');
     } catch (error) {
       console.log(error);
@@ -110,7 +110,7 @@ class SignIn extends React.Component {
       <section className="sign-up">
         <div className="container flex justify-center">
           <form
-            action={this.baseURL + "users/login"}
+            action={SIGN_IN_URL}
             onSubmit={this.handleSubmit}
             method="post"
             className="flex  flex-col w-40"

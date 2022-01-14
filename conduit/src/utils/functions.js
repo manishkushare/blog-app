@@ -13,3 +13,10 @@
 //   }
 // }
 // export { fetchData };
+// let addTab = (tab, ) => {
+//   this.setState({ activeTab: tab, offset: 0 ,activePage :1});
+// };
+// let removeTab = () => {
+//   this.setState({ activeTab: "" });
+// }
+// export { addTab, removeTab };

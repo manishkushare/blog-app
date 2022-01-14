@@ -1,0 +1,19 @@
+.settings{
+  form{
+    legend{
+      text-align: center;
+      font-size: 1.25rem;
+    }
+    input,textarea{
+      margin: 0.5rem 0;
+      padding: 0.5rem 0;
+    }
+    button{
+      padding: 0.5rem 1rem;
+      background-color: rgb(75, 173, 75);
+      outline: 0;
+      border: none;
+      color: white;
+    }
+  }
+}

@@ -8,7 +8,10 @@ import Article from "./Article";
 import { USER_TOKEN_KEY, USER_VERIFY_URL } from "../utils/constants";
 import Loader from "./verifyUser";
 import NoMatch from "./NoMatch";
-
+import NewPost from "./NewPost";
+import Settings from "./Settings";
+import Profile from "./Profile";
+import UserProfile from "./UserProfile";
 class App extends React.Component {
   constructor(props) {
     super();
@@ -30,7 +33,7 @@ class App extends React.Component {
         });
         if (user.ok) {
           user = await user.json();
-          console.log({ user }, ".....");
+          // console.log({ user }, ".....");
           return this.persistUser(user.user);
         } else {
           user = await user.json();
@@ -38,9 +41,15 @@ class App extends React.Component {
           return user;
         }
       }
+      else {
+        await Promise.reject("not found");
+      }
     } catch (error) {
       this.setState({ isVerifying: false });
     }
+  }
+  componentDidUpdate() {
+    console.log("componentDidUpdate");
   }
   persistUser = (user) => {
     localStorage.setItem(USER_TOKEN_KEY, user.token);
@@ -50,13 +59,22 @@ class App extends React.Component {
       isVerifying: false,
     });
   };
+  logOutUser = () => {
+    localStorage.clear();
+    this.setState({
+      user: null,
+      isLoggedIn: false,
+      isVerifying : false
+
+    })
+  }
   render() {
     const { user, isLoggedIn, isVerifying } = this.state;
     if (isVerifying) {
       return <Loader />;
     }
     return isLoggedIn ? (
-      <AuthorizedComponents user={user} isLoggedIn={isLoggedIn} />
+      <AuthorizedComponents user={user} isLoggedIn={isLoggedIn} persistUser={this.persistUser} logOutUser={this.logOutUser}/>
     ) : (
       <UnAuthorizedComponents
         user={user}
@@ -75,6 +93,17 @@ function AuthorizedComponents(props) {
           <Home user={props.user} isLoggedIn={props.isLoggedIn} />
         </Route>
         <Route path="/articles/:slug" component={Article}></Route>
+        <Route path="/newpost">
+          <NewPost user={props.user} />
+        </Route>
+        <Route path="/settings">
+          <Settings user={props.user} persistUser={props.persistUser} logOutUser={props.logOutUser} />
+        </Route>
+        <Route path="/profile" exact>
+          <Profile user={props.user}/>
+        </Route>
+        {/* <Route path="/profile/:username" exact component={UserProfile}></Route> */}
+          
         <Route path="*">
           <NoMatch />
         </Route>

@@ -10,6 +10,7 @@
 .nav-list{
   display: flex;
   justify-content: flex-end;
+  // align-items: baseline;
   li{
     color: rgb(178,178,178);
     padding-left: 1rem;
@@ -22,4 +23,19 @@
 }
 .nav{
  width: 60%;
+}
+.header{
+  
+  .profile-wrapper{
+    width: 50px;
+    height: 50px;
+    // border: 2px solid red;
+    align-items: flex-start;
+
+    img{
+      border-radius: 50%;
+      width: 100%;
+    }
+
+  }
 }

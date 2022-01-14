@@ -27,15 +27,24 @@ function Header(props) {
 function AuthenticatedHeader(props) {
   return (
     <>
-      <NavLink activeClassName="activeHeaderNav" to="/abc" exact>
+      <NavLink activeClassName="activeHeaderNav" to="/newpost" exact>
         <li>New Post</li>
       </NavLink>
-      <NavLink activeClassName="activeHeaderNav" to="/e" exact>
+      <NavLink activeClassName="activeHeaderNav" to="/settings" exact>
         <li>Settings</li>
       </NavLink>
 
-      <NavLink activeClassName="activeHeaderNav" to="/l">
-        <li>{props.user && props.user.username}</li>
+      <NavLink activeClassName="activeHeaderNav" to="/profile">
+        <li className=" flex ">
+          <div className="profile-wrapper flex ">
+            <img src={props.user.image} alt="" />
+
+          </div>
+          <span>
+            {props.user && props.user.username}
+
+          </span>
+        </li>
       </NavLink>
     </>
   );
