@@ -5,6 +5,7 @@ import Banner from "./Banner";
 import Pagination from "./Pagination";
 import ArticlesNav from "./ArticlesNav";
 import { ARTICLES_URL, ARTICLES_FEEDS_URL } from "../utils/constants";
+import Loader from "./Loader";
 // ||(activeTab === "yourfeeds" && `&author=${this.props.user.username}` )))
 class Home extends React.Component {
   constructor(props) {
@@ -33,12 +34,11 @@ class Home extends React.Component {
         console.log("inside if");
         articles = await fetch(ARTICLES_FEEDS_URL, {
           method: "GET",
-          headers: {
-            "Authorization": `Token ${this.props.user.token}`,
-          },
+          headers: new Headers({
+            Authorization: `Token ${this.props.user.token}`,
+          }),
         });
       } else {
-        console.log("inside else");
         articles = await fetch(
           ARTICLES_URL +
             `?limit=${articlesPerPage}&offset=${offset}` +
@@ -50,6 +50,7 @@ class Home extends React.Component {
         throw Error(articles.statusText);
       }
       articles = await articles.json();
+      console.log(articles);
       this.setState({
         articles,
         articleCount: articles.articlesCount,
@@ -60,7 +61,6 @@ class Home extends React.Component {
     }
   };
   componentDidMount() {
-    console.log("componentDidMount");
     this.fetchData();
   }
   handlePage = (pageNum) => {
@@ -80,14 +80,63 @@ class Home extends React.Component {
   componentDidUpdate(prevProps, prevState) {
     if (
       prevState.activePage !== this.state.activePage ||
-      prevState.activeTab !== this.state.activeTab
+      prevState.activeTab !== this.state.activeTab 
+      
     ) {
       console.log("componentDidUpdate");
       this.fetchData();
     }
+    // if(prevState.articles !== t)
+  }
+  favoriteArticle = async (slug) => {
+    console.log(slug);
+    try {
+      let article = await fetch(ARTICLES_URL + `/${slug}/` + "favorite", {
+        method:"POST",
+        headers: new Headers({
+          Authorization: `Token ${this.props.user.token}`,
+        }),
+      })
+      if (article.ok) {
+        article = await article.json();
+        console.log(article, "favorite");
+        await this.fetchData();
+        return;
+      } else {
+        article = await article.json();
+        article = await Promise.reject(article);
+        return article
+      }
+      
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  unFavoriteArticle = async (slug) => {
+    console.log(slug);
+    try {
+      let article = await fetch(ARTICLES_URL + `/${slug}/` + "favorite", {
+        method:"DELETE",
+        headers: new Headers({
+          Authorization: `Token ${this.props.user.token}`,
+        }),
+      })
+      if (article.ok) {
+        article = await article.json();
+        console.log(article, "unfavorite");
+        await this.fetchData();
+        return;
+      } else {
+        article = await article.json();
+        article = await Promise.reject(article);
+        return article
+      }
+      
+    } catch (error) {
+      console.log(error);
+    }
   }
   render() {
-    console.log(this.props);
     const {
       activePage,
       articles,
@@ -115,9 +164,13 @@ class Home extends React.Component {
                   {...articles}
                   activePage={activePage}
                   articleCount={articleCount}
+                  favoriteArticle={this.favoriteArticle}
+                  unFavoriteArticle={this.unFavoriteArticle}
+                  
                 />
               ) : (
-                <h3>Loading.....</h3>
+                // <h3>Loading.....</h3>
+                <Loader />
               )}
               <Pagination
                 articleCount={articleCount}

@@ -49,7 +49,6 @@ class App extends React.Component {
     }
   }
   componentDidUpdate() {
-    console.log("componentDidUpdate");
   }
   persistUser = (user) => {
     localStorage.setItem(USER_TOKEN_KEY, user.token);
@@ -92,18 +91,23 @@ function AuthorizedComponents(props) {
         <Route path="/" exact>
           <Home user={props.user} isLoggedIn={props.isLoggedIn} />
         </Route>
-        <Route path="/articles/:slug" component={Article}></Route>
+        <Route path="/articles/:slug" exact>
+          <Article user={props.user} isLoggedIn={props.isLoggedIn} />
+        </Route>
         <Route path="/newpost">
           <NewPost user={props.user} />
+        </Route>
+        <Route path="/editpost/:slug">
+          <NewPost user={props.user}/>
         </Route>
         <Route path="/settings">
           <Settings user={props.user} persistUser={props.persistUser} logOutUser={props.logOutUser} />
         </Route>
-        <Route path="/profile" exact>
+        
+        <Route path="/profile/:username" exact component={Profile} >
           <Profile user={props.user}/>
+
         </Route>
-        {/* <Route path="/profile/:username" exact component={UserProfile}></Route> */}
-          
         <Route path="*">
           <NoMatch />
         </Route>

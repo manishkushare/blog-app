@@ -145,6 +145,10 @@ Link, a {
   padding: 1rem 0;
 }
 
+.p-t-1 {
+  padding-top: 1rem;
+}
+
 .p-tb-2 {
   padding: 2rem 0;
 }
@@ -250,6 +254,10 @@ form span {
 
 .border-bottom {
   border-bottom: 2px solid #bebaba;
+}
+
+.gray_bg {
+  background-color: #b3afaf;
 }
 
 .header {
@@ -393,8 +401,16 @@ form span {
       -ms-flex-align: baseline;
           align-items: baseline;
   padding: 0.25rem 0.5rem;
-  border: 1px solid green;
   border-radius: 10px;
+}
+
+.row_one .liked {
+  border: 1px solid greenyellow;
+  color: greenyellow;
+}
+
+.row_one .unliked {
+  border: 1px solid black;
 }
 
 .row_two {
@@ -492,18 +508,20 @@ form span {
   padding: 2rem 0;
 }
 
-.single-article-comment .container {
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
-}
-
 .single-article-comment span {
   color: green !important;
   padding: 0 0.25rem;
+}
+
+.comment_section_wrapper span {
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+}
+
+.comment_section_wrapper span img {
+  width: 100%;
+  border-radius: 50%;
 }
 
 @-webkit-keyframes bouncing-loader {

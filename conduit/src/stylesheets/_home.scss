@@ -60,9 +60,16 @@
     justify-content: center;
     align-items: baseline;
     padding: 0.25rem 0.5rem ;
-    border: 1px solid green;
     border-radius: 10px;
     
+  }
+  .liked {
+    border: 1px solid greenyellow;
+    color: greenyellow;
+  }
+  .unliked{
+    border: 1px solid black;
+
   }
 }
 .row_two{

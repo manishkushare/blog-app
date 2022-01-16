@@ -1,5 +1,6 @@
 import React from "react";
 import { TAGS_LIST_URL } from "../utils/constants";
+import Loader from "./Loader";
 class Tags extends React.Component {
   constructor(props) {
     super(props);
@@ -29,7 +30,7 @@ class Tags extends React.Component {
       return <h2>{error}</h2>
     }
     if (!tagsList) {
-      return <h1>Loading ......</h1>
+      return <Loader />
     }
     return (
       <ul className="tag-lists flex flex-wrap flex-start">

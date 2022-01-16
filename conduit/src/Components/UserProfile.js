@@ -10,6 +10,7 @@ class UserProfile extends React.Component{
   }
   fetch = async () => {
     const username = this.props.match.params.username;
+    
     try {
       let profile = await fetch(PROFILE_URL+ username);
       if (profile.ok) {
@@ -32,7 +33,7 @@ class UserProfile extends React.Component{
     const { profile } = this.state;
     console.log(profile,"profile");
     return (
-      
+      // this.props.children(profile)
       <Profile user={profile} />
     )
   }

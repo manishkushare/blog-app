@@ -34,7 +34,7 @@ function AuthenticatedHeader(props) {
         <li>Settings</li>
       </NavLink>
 
-      <NavLink activeClassName="activeHeaderNav" to="/profile">
+      <NavLink activeClassName="activeHeaderNav" to={`/profile/${props.user.username}`}>
         <li className=" flex ">
           <div className="profile-wrapper flex ">
             <img src={props.user.image} alt="" />
