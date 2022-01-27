@@ -6,6 +6,7 @@ function Header(props) {
       <div className="container header-wrapper">
         <Link to="/">
           <h1>conduit</h1>
+          
         </Link>
         <nav className="nav">
           <ul className="nav-list">

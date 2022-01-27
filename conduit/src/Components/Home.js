@@ -38,7 +38,7 @@ class Home extends React.Component {
             Authorization: `Token ${this.props.user.token}`,
           }),
         });
-      } else {
+      } else  {
         articles = await fetch(
           ARTICLES_URL +
             `?limit=${articlesPerPage}&offset=${offset}` +
@@ -49,8 +49,9 @@ class Home extends React.Component {
       if (!articles.ok) {
         throw Error(articles.statusText);
       }
+    
       articles = await articles.json();
-      console.log(articles);
+      console.log({articles});
       this.setState({
         articles,
         articleCount: articles.articlesCount,

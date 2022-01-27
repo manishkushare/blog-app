@@ -83,7 +83,7 @@ class Profile extends React.Component {
       }
       articles = await articles.json();
       console.log(articles);
-      this.setState({ articles, articleCount: articles.articlesCount });
+      this.setState({ articles :articles, articleCount: articles.articlesCount });
     } catch (error) {
       this.setState({ error: "Not able to fetch Articles" });
     }
