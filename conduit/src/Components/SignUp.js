@@ -2,7 +2,9 @@ import React from "react";
 import { Link, Redirect } from "react-router-dom";
 import { SIGN_UP_URL } from "../utils/constants";
 import { withRouter } from "react-router-dom";
+import UserContext from "./UserContext";
 class SignUp extends React.Component {
+  static contextType = UserContext;
   constructor(props) {
     super(props);
     this.state = {
@@ -97,7 +99,7 @@ class SignUp extends React.Component {
       }
       user = await user.json();
       console.log(user);
-      this.props.persistUser(user.user);
+      this.context.persistUser(user.user);
       // this.setState({ username: "", email: "", password: "" });
       return this.props.history.push('/');
 

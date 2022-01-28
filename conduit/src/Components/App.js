@@ -13,6 +13,8 @@ import Settings from "./Settings";
 import Profile from "./Profile";
 import UserProfile from "./UserProfile";
 import ErrorBoundary from "./ErrorBoundary";
+import UserContext from "./UserContext";
+// import WithUser
 class App extends React.Component {
   constructor(props) {
     super();
@@ -74,13 +76,19 @@ class App extends React.Component {
       return <Loader />;
     }
     return isLoggedIn ? (
-      <AuthorizedComponents user={user} isLoggedIn={isLoggedIn} persistUser={this.persistUser} logOutUser={this.logOutUser}/>
+      <UserContext.Provider value={{user:user,isLoggedIn:isLoggedIn,persistUser:this.persistUser,logOutUser:this.logOutUser}} >
+
+        <AuthorizedComponents user={user} isLoggedIn={isLoggedIn} persistUser={this.persistUser} logOutUser={this.logOutUser}/>
+      </UserContext.Provider>
     ) : (
-      <UnAuthorizedComponents
-        user={user}
-        isLoggedIn={isLoggedIn}
-        persistUser={this.persistUser}
-      />
+      <UserContext.Provider value={{user:user,isLoggedIn:isLoggedIn,persistUser:this.persistUser,logOutUser:this.logOutUser}} >
+        <UnAuthorizedComponents
+          user={user}
+          isLoggedIn={isLoggedIn}
+          persistUser={this.persistUser}
+        />
+
+      </UserContext.Provider>
     );
   }
 }
@@ -88,26 +96,26 @@ function AuthorizedComponents(props) {
   return (
     <>
       <ErrorBoundary>
-        <Header user={props.user} isLoggedIn={props.isLoggedIn} />
+        <Header  />
         <Switch>
           <Route path="/" exact>
-            <Home user={props.user} isLoggedIn={props.isLoggedIn} />
+            <Home  />
           </Route>
           <Route path="/articles/:slug" exact>
-            <Article user={props.user} isLoggedIn={props.isLoggedIn} />
+            <Article  />
           </Route>
           <Route path="/newpost">
-            <NewPost user={props.user} />
+            <NewPost  />
           </Route>
           <Route path="/editpost/:slug">
-            <NewPost user={props.user}/>
+            <NewPost />
           </Route>
           <Route path="/settings">
-            <Settings user={props.user} persistUser={props.persistUser} logOutUser={props.logOutUser} />
+            <Settings  />
           </Route>
           
-          <Route path="/profile/:username" exact component={Profile} >
-            <Profile user={props.user}/>
+          <Route path="/profile/:username" exact  >
+            <Profile />
 
           </Route>
           <Route path="*">
@@ -123,16 +131,16 @@ function UnAuthorizedComponents(props) {
   return (
     <>
     <ErrorBoundary>
-      <Header user={props.user} isLoggedIn={props.isLoggedIn} />
+      <Header />
       <Switch>
         <Route path="/" exact>
-          <Home user={props.user} isLoggedIn={props.isLoggedIn} />
+          <Home  />
         </Route>
         <Route path="/register">
-          <SignUp persistUser={props.persistUser} />
+          <SignUp  />
         </Route>
         <Route path="/login">
-          <SignIn persistUser={props.persistUser} />
+          <SignIn  />
         </Route>
         <Route path="/articles/:slug" component={Article}></Route>
         <Route path="*">

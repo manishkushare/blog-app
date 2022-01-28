@@ -2,7 +2,10 @@
 import { Link, withRouter } from "react-router-dom";
 import React from "react";
 import { ARTICLES_URL } from "../utils/constants";
+import UserContext from "./UserContext";
 class Article extends React.Component {
+  static contextType = UserContext;
+
   constructor(props) {
     super(props);
     this.state = {
@@ -68,7 +71,7 @@ class Article extends React.Component {
       let article = await fetch(ARTICLES_URL + `/${slug}`, {
         method: "DELETE",
         headers: new Headers({
-          Authorization: `Token ${this.props.user.token}`,
+          Authorization: `Token ${this.context.user.token}`,
         }),
       });
       if (article.ok) {
@@ -100,7 +103,7 @@ class Article extends React.Component {
           method: "POST",
           headers: {
             "Content-type": "application/json",
-            Authorization : `Token ${this.props.user.token}`
+            Authorization : `Token ${this.context.user.token}`
           },
           body: JSON.stringify({
             comment: {
@@ -124,6 +127,7 @@ class Article extends React.Component {
   render() {
     const { article, error, comments, comment } = this.state;
     console.log(this.props);
+    const {user,isLoggedIn} = this.context;
     if (error) {
       return (
         <div className="container">
@@ -156,8 +160,8 @@ class Article extends React.Component {
                 <span>{article.createdAt}</span>
               </div>
             </div>
-            {this.props.isLoggedIn &&
-              this.props.user.username === article.author.username && (
+            {isLoggedIn &&
+              user.username === article.author.username && (
                 <ul>
                   <Link to={`/editpost/${article.slug}`}>
                     <li>
@@ -185,7 +189,7 @@ class Article extends React.Component {
           </div>
         </article>
         <article className="single-article-comment">
-          {this.props.isLoggedIn ? (
+          {isLoggedIn ? (
             <div className="container">
               <div className="comment_section_wrapper flex flex-col ">
                 <form
@@ -206,7 +210,7 @@ class Article extends React.Component {
                   ></textarea>
                   <div className="flex space-between align-item-start p-t-1 gray_bg">
                     <span className="">
-                      <img src={this.props.user.image} alt="" />
+                      <img src={user.image} alt="" />
                     </span>
 
                     <button type="submit">

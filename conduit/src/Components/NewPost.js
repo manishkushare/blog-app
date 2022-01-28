@@ -2,7 +2,9 @@ import React from "react";
 import react from "react";
 import { ARTICLES_URL } from "../utils/constants";
 import { withRouter } from "react-router-dom";
+import UserContext from "./UserContext";
 class NewPost extends React.Component {
+  static contextType = UserContext;
   constructor(props) {
     super();
     this.state = {
@@ -18,6 +20,8 @@ class NewPost extends React.Component {
         error: "",
       },
     };
+    
+    
   }
   fetchArticle = async () => {
     try {
@@ -44,6 +48,7 @@ class NewPost extends React.Component {
     }
   };
   componentDidMount() {
+    // this.token = this.context;
     if (this.props.match.params.slug) {
       this.fetchArticle();
     }
@@ -99,7 +104,6 @@ class NewPost extends React.Component {
   handleSubmit = async (event) => {
     event.preventDefault();
     const { title, body, description, tagList } = this.state;
-    const token = this.props.user.token;
     try {
       let article = null;
       if (this.props.match.params.slug) {
@@ -107,7 +111,7 @@ class NewPost extends React.Component {
           method: "PUT",
           headers: {
             "Content-type": "application/json",
-            Authorization: `Token ${token}`,
+            Authorization: `Token ${this.context.user.token}`,
           },
           body: JSON.stringify({
             article: {
@@ -124,7 +128,7 @@ class NewPost extends React.Component {
           method: "POST",
           headers: {
             "Content-type": "application/json",
-            Authorization: `Token ${token}`,
+            Authorization: `Token ${this.context.user.token}`,
           },
           body: JSON.stringify({
             article: {

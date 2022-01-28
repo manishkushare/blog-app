@@ -6,8 +6,9 @@ import Pagination from "./Pagination";
 import ArticlesNav from "./ArticlesNav";
 import { ARTICLES_URL, ARTICLES_FEEDS_URL } from "../utils/constants";
 import Loader from "./Loader";
-// ||(activeTab === "yourfeeds" && `&author=${this.props.user.username}` )))
+import UserContext from "./UserContext";
 class Home extends React.Component {
+  static contextType = UserContext;
   constructor(props) {
     super(props);
     this.state = {
@@ -20,12 +21,14 @@ class Home extends React.Component {
       activeTab: "",
     };
   }
+  
   addTab = (tab) => {
     this.setState({ activeTab: tab, offset: 0, activePage: 1 });
   };
   removeTab = () => {
     this.setState({ activeTab: "" });
   };
+  
   fetchData = async () => {
     const { articlesPerPage, offset, activeTab } = this.state;
     try {
@@ -35,7 +38,7 @@ class Home extends React.Component {
         articles = await fetch(ARTICLES_FEEDS_URL, {
           method: "GET",
           headers: new Headers({
-            Authorization: `Token ${this.props.user.token}`,
+            Authorization: `Token ${this.context.user.token}`,
           }),
         });
       } else  {
@@ -95,7 +98,7 @@ class Home extends React.Component {
       let article = await fetch(ARTICLES_URL + `/${slug}/` + "favorite", {
         method:"POST",
         headers: new Headers({
-          Authorization: `Token ${this.props.user.token}`,
+          Authorization: `Token ${this.context.user.token}`,
         }),
       })
       if (article.ok) {
@@ -119,7 +122,7 @@ class Home extends React.Component {
       let article = await fetch(ARTICLES_URL + `/${slug}/` + "favorite", {
         method:"DELETE",
         headers: new Headers({
-          Authorization: `Token ${this.props.user.token}`,
+          Authorization: `Token ${this.context.user.token}`,
         }),
       })
       if (article.ok) {
@@ -146,7 +149,6 @@ class Home extends React.Component {
       activeTab,
       error,
     } = this.state;
-    const { user, isLoggedIn } = this.props;
     return (
       <>
         <Banner />
@@ -157,8 +159,7 @@ class Home extends React.Component {
                 activeTab={activeTab}
                 removeTab={this.removeTab}
                 addTab={this.addTab}
-                user={user}
-                isLoggedIn={isLoggedIn}
+                
               />
               {articles ? (
                 <Articles
@@ -170,7 +171,6 @@ class Home extends React.Component {
                   
                 />
               ) : (
-                // <h3>Loading.....</h3>
                 <Loader />
               )}
               <Pagination

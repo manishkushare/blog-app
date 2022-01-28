@@ -7,7 +7,9 @@ import Articles from "./Articles";
 import Pagination from "./Pagination";
 import Loader from "./Loader";
 import { withRouter } from "react-router-dom";
+import UserContext from "./UserContext";
 class Profile extends React.Component {
+  static contextType = UserContext;
   constructor(props) {
     super(props);
     this.state = {
@@ -49,7 +51,7 @@ class Profile extends React.Component {
       let profile = await fetch(PROFILE_URL + username, {
         method: "GET",
         headers: new Headers({
-          Authorization: `Token ${this.props.user.token}`,
+          Authorization: `Token ${this.context.user.token}`,
         }),
       });
       if (profile.ok) {
@@ -110,13 +112,13 @@ class Profile extends React.Component {
   };
   handleFollow = async () => {
     try {
-      console.log("Token", this.props.user.token);
+      console.log("Token", this.context.user.token);
       let profile = await fetch(
         PROFILE_URL + `${this.state.params}` + "/follow",
         {
           method: "POST",
           headers: new Headers({
-            Authorization: `Token ${this.props.user.token}`,
+            Authorization: `Token ${this.context.user.token}`,
           }),
         }
       );
@@ -142,7 +144,7 @@ class Profile extends React.Component {
         {
           method: "DELETE",
           headers: new Headers({
-            Authorization: `Token ${this.props.user.token}`,
+            Authorization: `Token ${this.context.user.token}`,
           }),
         }
       );
@@ -179,8 +181,7 @@ class Profile extends React.Component {
     return (
       <>
         <ProfileBanner
-          user={profile}
-          loggedInUser={this.props.user}
+          profile={profile}
           handleFollow={this.handleFollow}
           handleUnfollow={this.handleUnfollow}
         />

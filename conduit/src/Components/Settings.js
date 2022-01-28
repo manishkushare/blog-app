@@ -1,7 +1,9 @@
 import React from "react";
 import { USER_VERIFY_URL as USER_URL,USER_TOKEN_KEY } from "../utils/constants";
 import { withRouter } from "react-router-dom";
+import UserContext from "./UserContext";
 class Settings extends React.Component {
+  static contextType = UserContext;
   constructor(props) {
     super();
     this.state = {
@@ -17,13 +19,15 @@ class Settings extends React.Component {
     }
   }
   async componentDidMount() {
-    const token = this.props.user.token;
-    const username = this.props.user.username;
+    // const token = this.props.user.token;
+    // const username = this.props.user.username;
+    const userInfo = this.context;
+    console.log(userInfo);
     try {
       let user = await fetch(USER_URL, {
         method: "GET",
         headers: {
-          'Authorization' : `Token ${token}`
+          'Authorization' : `Token ${userInfo.user.token}`
         }
       });
       if (user.ok) {
@@ -72,7 +76,7 @@ class Settings extends React.Component {
   };
   handleSubmit = async (event) => {
     event.preventDefault();
-    const token = this.props.user.token;
+    const token = this.context.user.token;
     let { email, password, bio, image, username } = this.state;
     let userObj = {};
     if (email) {
@@ -105,7 +109,7 @@ class Settings extends React.Component {
       if (user.ok) {
         user = await user.json();
         // console.log(user);
-        this.props.persistUser(user.user);
+        this.context.persistUser(user.user);
         return this.props.history.push('/settings');
 
       } else {
@@ -119,7 +123,7 @@ class Settings extends React.Component {
     }
   }
   handleLogOut = () => {
-    this.props.logOutUser();
+    this.context.logOutUser();
     return this.props.history.push('/');
 
 
