@@ -39,3 +39,41 @@
 
   }
 }
+.hamburg-menu{
+  display: none;
+}
+
+@media screen and (max-width:768px) {
+  .header{
+    position: relative;
+    padding: 1rem 2rem;
+    .nav{
+      position:absolute;
+      top: 100%;
+      background-color: #f5f5f5;
+      right: 0;
+      left: 0;
+      width: 100%;
+      .nav-list{
+        flex-flow: column wrap;
+        // align-items: flex-end;
+        align-items: center;
+        margin: 0 auto;
+        padding: 1rem ;
+        li{
+          padding: 0.25rem 0;
+        }
+      }
+      .open{
+        display: block;
+      }
+      .close{
+        display: none;
+      }
+    }
+
+  }
+  .hamburg-menu{
+    display: inline-block;
+  }
+}

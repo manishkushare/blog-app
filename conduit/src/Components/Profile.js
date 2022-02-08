@@ -18,7 +18,7 @@ class Profile extends React.Component {
       offset: 0,
       articlesPerPage: 10,
       error: "",
-      activeTab: "",
+      activeTab: "yourArticles",
       articleCount: null,
       activePage: 1,
       profile: null,
@@ -35,7 +35,11 @@ class Profile extends React.Component {
       prevState.activePage !== activePage ||
       prevState.activeTab !== activeTab
     ) {
-      console.log("component did update", this.state.offset, this.state.activePage);
+      console.log(
+        "component did update",
+        this.state.offset,
+        this.state.activePage
+      );
       this.fetchData();
     }
     if (prevState.params !== this.props.match.params.username) {
@@ -71,21 +75,30 @@ class Profile extends React.Component {
   };
   fetchData = async () => {
     const { articlesPerPage, offset, activeTab } = this.state;
-    console.log(offset,activeTab);
+    console.log(offset, activeTab,articlesPerPage);
 
     try {
       let articles = await fetch(
         ARTICLES_URL +
           `?limit=${articlesPerPage}&offset=${offset}` +
-          (activeTab || `&author=${this.props.match.params.username}`) +
-          (activeTab && `&favorited=${this.props.match.params.username}`)
+          ((activeTab === "yourArticles" && `&author=${this.props.match.params.username}`) ||
+          (activeTab === "favoritedArticles" && `&favorited=${this.props.match.params.username}` ) ) ,
+        {
+          method: "GET",
+          headers: new Headers({
+            Authorization: `Token ${this.context.user.token}`,
+          }),
+        }
       );
       if (!articles.ok) {
         throw Error(articles.statusText);
       }
-      articles = await articles.json();
-      console.log(articles);
-      this.setState({ articles :articles, articleCount: articles.articlesCount });
+      let articlesJSON = await articles.json();
+      console.log(articlesJSON,"a");
+      this.setState({
+        articles: articlesJSON,
+        articleCount: articlesJSON.articlesCount,
+      });
     } catch (error) {
       this.setState({ error: "Not able to fetch Articles" });
     }

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import moment from "moment";
 function Articles(props) {
   if (props.articles.length === 0 ) {
     return (
@@ -29,7 +30,7 @@ function Articles(props) {
                   </div>
                   <div className="author-info">
                     <h2>{article.author.username}</h2>
-                    <span>{article.createdAt}</span>
+                    <span>{moment(article.createdAt).format("YYYY/MM/DD")}</span>
                   </div>
                 </div>
               </Link>
@@ -43,7 +44,7 @@ function Articles(props) {
             </div>
             <div className="row_two">
               <h2>{article.title}</h2>
-              <p>{article.body}</p>
+              <p>{article.body.slice(0,100)}</p>
             </div>
             <div className="row_three">
               <Link to={`/articles/${article.slug}`}>

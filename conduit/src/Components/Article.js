@@ -3,6 +3,7 @@ import { Link, withRouter } from "react-router-dom";
 import React from "react";
 import { ARTICLES_URL } from "../utils/constants";
 import UserContext from "./UserContext";
+import moment from "moment";
 class Article extends React.Component {
   static contextType = UserContext;
 
@@ -23,7 +24,6 @@ class Article extends React.Component {
       let comments = await fetch(ARTICLES_URL + `/${slug}/comments`);
       if (comments.ok) {
         comments = await comments.json();
-        console.log(comments, "comments");
         this.setState({
           comments: comments.comments
         })
@@ -33,7 +33,7 @@ class Article extends React.Component {
         return comments;
       }
     } catch (error) {
-      console.log(error);
+      this.setState({error})
     }
   }
   async componentDidMount() {
@@ -47,7 +47,6 @@ class Article extends React.Component {
       let comments = await fetch(ARTICLES_URL + `/${slug}/comments`);
       if (comments.ok) {
         comments = await comments.json();
-        console.log(comments, "comments");
         this.setState({
           comments:comments.comments
         })
@@ -83,7 +82,7 @@ class Article extends React.Component {
         return article;
       }
     } catch (error) {
-      console.log(error);
+      this.setState({error});
     }
   };
   handleChange = ({ target }) => {
@@ -109,7 +108,7 @@ class Article extends React.Component {
             comment: {
               body: comment,
             },
-          }),
+          })
         }
       );
       if (postComment.ok) {
@@ -121,12 +120,11 @@ class Article extends React.Component {
         return postComment;
       }
     } catch (error) {
-      console.log(error);
+      this.setState({error})
     }
   };
   render() {
     const { article, error, comments, comment } = this.state;
-    console.log(this.props);
     const {user,isLoggedIn} = this.context;
     if (error) {
       return (
@@ -157,7 +155,7 @@ class Article extends React.Component {
               </div>
               <div className="flex margin-lr-0_25 flex-col">
                 <span>{article.author.username}</span>
-                <span>{article.createdAt}</span>
+                <span>{moment(article.createdAt).format("YYYY/MM/DD")}</span>
               </div>
             </div>
             {isLoggedIn &&

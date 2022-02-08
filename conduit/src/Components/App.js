@@ -32,11 +32,11 @@ class App extends React.Component {
           method: "GET",
           headers: {
             Authorization: `Token ${token}`,
-          },
+          }
+
         });
         if (user.ok) {
           user = await user.json();
-          // console.log({ user }, ".....");
           return this.persistUser(user.user);
         } else {
           user = await user.json();
@@ -96,33 +96,31 @@ function AuthorizedComponents(props) {
   return (
     <>
       <ErrorBoundary>
-        <Header  />
+        <Header />
         <Switch>
           <Route path="/" exact>
-            <Home  />
+            <Home />
           </Route>
           <Route path="/articles/:slug" exact>
-            <Article  />
+            <Article />
           </Route>
           <Route path="/newpost">
-            <NewPost  />
+            <NewPost />
           </Route>
           <Route path="/editpost/:slug">
             <NewPost />
           </Route>
           <Route path="/settings">
-            <Settings  />
+            <Settings />
           </Route>
-          
-          <Route path="/profile/:username" exact  >
-            <Profile />
 
+          <Route path="/profile/:username" exact>
+            <Profile />
           </Route>
           <Route path="*">
             <NoMatch />
           </Route>
         </Switch>
-
       </ErrorBoundary>
     </>
   );

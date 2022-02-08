@@ -35,14 +35,26 @@ class Home extends React.Component {
       let articles = null;
       if (activeTab && activeTab === "yourfeeds") {
         console.log("inside if");
-        articles = await fetch(ARTICLES_FEEDS_URL, {
+        articles = await fetch(ARTICLES_FEEDS_URL+
+          `?limit=${articlesPerPage}&offset=${offset}` +
+            (activeTab && `&tag=${activeTab} `), {
+          method: "GET",
+          headers: new Headers({
+            Authorization: `Token ${this.context.user.token}`
+          })
+        });
+      } else  {
+        articles = this.context.user.token ? await fetch(ARTICLES_URL+
+          `?limit=${articlesPerPage}&offset=${offset}` +
+            (activeTab && `&tag=${activeTab} `)
+           , 
+           {
           method: "GET",
           headers: new Headers({
             Authorization: `Token ${this.context.user.token}`,
           }),
-        });
-      } else  {
-        articles = await fetch(
+        }) :
+          await fetch(
           ARTICLES_URL +
             `?limit=${articlesPerPage}&offset=${offset}` +
             (activeTab && `&tag=${activeTab} `)
@@ -54,6 +66,7 @@ class Home extends React.Component {
       }
     
       articles = await articles.json();
+      
       console.log({articles});
       this.setState({
         articles,
@@ -104,8 +117,8 @@ class Home extends React.Component {
       if (article.ok) {
         article = await article.json();
         console.log(article, "favorite");
-        await this.fetchData();
-        return;
+        return this.fetchData();
+        
       } else {
         article = await article.json();
         article = await Promise.reject(article);
@@ -186,7 +199,7 @@ class Home extends React.Component {
           </div>
         </section>
       </>
-    );
+    )
   }
 }
 export default Home;
