@@ -45,7 +45,7 @@ function Articles(props) {
             <div className="row_two">
               <h2>{article.title}</h2>
               {
-                article.body && <p>article.body.slice(0,100)</p> 
+                article.body && <p>{article.body.slice(0,100)}</p> 
               }
               
             </div>
