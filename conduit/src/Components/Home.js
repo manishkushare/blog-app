@@ -44,16 +44,19 @@ class Home extends React.Component {
           })
         });
       } else  {
-        articles = this.context.user.token ? await fetch(ARTICLES_URL+
-          `?limit=${articlesPerPage}&offset=${offset}` +
-            (activeTab && `&tag=${activeTab} `)
-           , 
-           {
-          method: "GET",
-          headers: new Headers({
-            Authorization: `Token ${this.context.user.token}`,
-          }),
-        }) :
+        articles = this.context.user && this.context.user.token ?(
+          await fetch(ARTICLES_URL+
+            `?limit=${articlesPerPage}&offset=${offset}` +
+              (activeTab && `&tag=${activeTab} `)
+             , 
+             {
+            method: "GET",
+            headers: new Headers({
+              Authorization: `Token ${this.context.user.token}`,
+            }),
+          }) 
+          
+        ) :
           await fetch(
           ARTICLES_URL +
             `?limit=${articlesPerPage}&offset=${offset}` +
