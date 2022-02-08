@@ -44,7 +44,10 @@ function Articles(props) {
             </div>
             <div className="row_two">
               <h2>{article.title}</h2>
-              <p>{article.body.slice(0,100)}</p>
+              {
+                article.body && <p>article.body.slice(0,100)</p> 
+              }
+              
             </div>
             <div className="row_three">
               <Link to={`/articles/${article.slug}`}>
