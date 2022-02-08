@@ -141,18 +141,25 @@ class Settings extends React.Component {
           >
             <legend>Your Settings</legend>
             {error ? <span>{error}</span> : null}
+            <label htmlFor="">Image Url</label>
             <input
               type="text"
               name="image"
+              placeholder="url of picture profile"
               value={image}
               onChange={this.handleChange}
             />
+            <label htmlFor="">Email</label>
             <input type="text"
-              placeholder="url of picture profile"
+              placeholder="Email"
               name="email"
               value={email}
               onChange={this.handleChange}
-            />
+              />
+              {
+                emailError ? <span>{emailError}</span> : null
+              }
+            <label htmlFor="">Username</label>
             <input
               type="text"
               placeholder="username"
@@ -160,6 +167,7 @@ class Settings extends React.Component {
               value={username}
               onChange={this.handleChange}
             />
+            <label htmlFor="">Bio</label>
             <textarea
               name="bio"
               id=""
@@ -169,16 +177,7 @@ class Settings extends React.Component {
               value={bio}
               onChange={this.handleChange}
             ></textarea>
-            <input
-              type="email"
-              name="email"
-              placeholder="Your email"
-              value={email}
-              onChange={this.handleChange}
-            />
-            {
-              emailError ? <span>{emailError}</span> : null
-            }
+            <label htmlFor="">Password</label>
             <input
               type="password" name=""
               placeholder="New Password"
