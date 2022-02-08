@@ -1,0 +1,143 @@
+*{
+  box-sizing: border-box;
+}
+body{
+  line-height: 1.5;
+  font-size: 16px;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+.container{
+  max-width: 1024px;
+  margin:  0 auto;
+}
+Link,a{
+  text-decoration: none;
+}
+
+.flex{
+  display: flex;
+}
+.flex-wrap{
+  flex-wrap: wrap;
+}
+.space-between{
+  justify-content: space-between;
+}
+.justify-center{
+  justify-content: center;
+}
+.padding-1{
+  padding: 1rem;
+}
+.padding-y-2rem{
+  padding: 2rem 0;
+}
+.flex-start{
+  justify-content: flex-start;
+}
+.align-item-center{
+  align-items: center;
+}
+.flex-col{
+  flex-direction: column;
+}
+.flex-row{
+  flex-direction: row;
+}
+.w-40{
+  width: 40%;
+}
+.w-80{
+  width: 80%;
+}
+.border{
+  border: 1px solid black;
+}
+.p-tb-1{
+  padding: 1rem 0;
+}
+.p-t-1{
+  padding-top: 1rem;
+}
+.p-tb-2{
+  padding: 2rem 0;
+}
+.align-item-center{
+  align-items: center;
+}
+.justify-end{
+  justify-content: flex-end;
+}
+.justify-around{
+  justify-content: space-around;
+}
+.justify-evenly{
+  justify-content: space-evenly;
+}
+.error{
+  border: 1px solid red;
+}
+.activeHeaderNav{
+  li {
+    color: rgb(92,184,91) !important;
+    font-weight: 800;
+
+  }
+}
+.w-100{
+  width: 100%;
+}
+.inline-flex{
+  display: inline-flex;
+}
+.w-20{
+  width: 20%;
+}
+.border-circle{
+  border-radius: 50%;
+}
+.align-item-start{
+  align-items: flex-start;
+}
+.margin-lr-0_25{
+  margin: 0 0.25rem;
+}
+.padding-lr-2rem{
+  padding: 0 2rem;
+}
+.activePage{
+  background-color: green;
+  color: white;
+}
+.inActivePage{
+  // background-color: green;
+  color: green;
+}
+.active-articles-nav{
+  display: inline-block;
+  border-bottom: 5px solid green;
+  color: green;
+  // margin-left: 1rem;
+  padding: 0 1rem;
+}
+.margin-l-1{
+  margin-left: 1rem;
+}
+.activeTag{
+  background-color: green !important;
+}
+form{
+  span{
+    color: red;
+    font-size: 0.8rem;
+  }
+}
+.align-item-baseline{
+  align-items: baseline;
+}
+.border-bottom {
+  border-bottom: 2px solid rgb(190, 186, 186);
+}
+.gray_bg{
+  background-color: rgb(179, 175, 175);
+}
